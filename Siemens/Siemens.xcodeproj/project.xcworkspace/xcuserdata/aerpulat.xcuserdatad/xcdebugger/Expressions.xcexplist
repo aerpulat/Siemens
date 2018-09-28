@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "OpenWorkOrdersController.tableView(_:numberOfRowsInSection:):OpenWorkOrdersController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.trainList.count">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

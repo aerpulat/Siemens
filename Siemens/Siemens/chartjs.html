@@ -1,0 +1,138 @@
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0" />
+  <style type="text/css">
+      body {
+        margin: 0px;
+        padding: 10px;
+        background: #fff;
+      }
+      #chart {
+        width: 90%;
+        height: 90%;
+      }
+      .chartWrapper {
+        position: relative;
+      }
+  
+      .chartWrapper > canvas {
+        position: absolute;
+        left: 0;
+        top: 0;
+        pointer-events:none;
+      }
+  
+      .chartAreaWrapper {
+        width: 600px;
+        overflow-x: scroll;
+      }
+
+    </style>
+</head>
+<body>
+<script src="Chart.js"></script>
+
+<div class="chartWrapper">
+    <div class="chartAreaWrapper">
+        <canvas id="myChart" height="400" width="1200"></canvas>
+    </div>
+    <canvas id="myChartAxis" height="400" width="0"></canvas>
+</div>
+
+<script>
+    
+    function getDataSet1() {
+        return [12, 12, 3, 5, 2, 3];
+    }
+    function getDataSet2() {
+        return [8, 10, 4, 7, 5, 2];
+    }
+function click() {
+    showAlert('Hello world');
+}
+var ctx = document.getElementById("myChart").getContext('2d');
+var color = Chart.helpers.color;
+/*** Gradient ***/
+var gradient = ctx.createLinearGradient(0, 0, 0, 400);
+gradient.addColorStop(0, 'rgba(250,174,50,0.5)');
+gradient.addColorStop(1, 'rgba(255, 0, 0, 1)');
+/***************/
+
+var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+                        /*
+                         'rgba(255, 99, 132, 0.2)',
+                         'rgba(54, 162, 235, 0.2)',
+                         'rgba(255, 206, 86, 0.2)',
+                         'rgba(75, 192, 192, 0.2)',
+                         'rgba(153, 102, 255, 0.2)',
+                         'rgba(255, 159, 64, 0.2)'
+                         */
+        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+        datasets: [{
+            label: '# of Votes',
+            data: getDataSet1(),
+            //backgroundColor: 'rgba(54, 162, 235, 0.3)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            backgroundColor : gradient,
+            borderWidth: 1
+        },{
+                   label: '# of Votes',
+                   data: getDataSet2(),
+                   backgroundColor: 'rgba(255,99,132,0.3)',
+                   borderColor: 'rgba(255,99,132,1)',
+                   borderWidth: 1
+                   }
+                   ]
+    },
+    events: ["click"],
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    fontColor: "gray",
+                    fontSize: 12,
+                    stepSize: 5,
+                    beginAtZero:true
+                }
+            }],
+                        xAxes: [{
+                                ticks: {
+                                fontColor: "gray",
+                                fillStyle: "black",
+                                fontSize: 12,
+                                stepSize: 1,
+                                beginAtZero:true
+                                }
+                                }]
+        },
+        legend: {
+            labels: {
+                fontColor: "black",
+                fontSize: 12
+            }
+        }
+    }
+});
+
+(myChart.canvas).onclick = function(evt) {
+    var activePoints = myChart.getElementsAtEvent(evt);
+    // let's say you wanted to perform different actions based on label selected
+    if (activePoints.length > 0) {
+        console.log(activePoints[0]._model.label)
+        try {
+            webkit.messageHandlers.callbackHandler.postMessage(
+                                                           "" + activePoints[0]._index
+                                                           );
+        } catch(err) {
+            console.log('The native context does not exist yet');
+        }
+        //alert(activePoints[0]._index)
+    }
+}
+
+</script>
+
+</body>
+</html>
